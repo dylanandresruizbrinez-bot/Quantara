@@ -27,6 +27,15 @@
 <button onclick="crearAdmin()">
 Agregar administrador
 </button>
+  <button onclick="renombrarAdmin()">
+Cambiar nombre
+</button>
+  <button onclick="eliminarAdmin()">
+Eliminar administrador
+</button>
+  <button onclick="toggleTheme()">
+Cambiar tema
+</button>
 </div>
 <!-- FORM -->
 <div class="card">
@@ -175,6 +184,45 @@ const categoriasPorTipo = {
    'administradores',
    JSON.stringify(administradores)
  );
+}
+  function renombrarAdmin(){
+
+ let nuevoNombre = prompt('Nuevo nombre');
+
+ if(!nuevoNombre) return;
+
+ if(administradores[nuevoNombre]){
+   alert('Ese nombre ya existe');
+   return;
+ }
+
+ administradores[nuevoNombre] =
+   administradores[adminActual];
+
+ delete administradores[adminActual];
+
+ adminActual = nuevoNombre;
+
+ guardar();
+ actualizarAdmins();
+ render();
+}
+  function eliminarAdmin(){
+
+ if(Object.keys(administradores).length <= 1){
+   alert('Debe existir al menos uno');
+   return;
+ }
+
+ if(!confirm('¿Eliminar administrador?')) return;
+
+ delete administradores[adminActual];
+
+ adminActual = Object.keys(administradores)[0];
+
+ guardar();
+ actualizarAdmins();
+ render();
 }
 function actualizarCategorias(){
   const tipo = document.getElementById('tipo').value;
@@ -440,7 +488,19 @@ function importarExcel(){
 
  reader.readAsArrayBuffer(file);
 }
+function toggleTheme(){
 
+ document.body.classList.toggle('light');
+
+ localStorage.setItem(
+   'theme',
+   document.body.classList.contains('light')
+ );
+}
+
+if(localStorage.getItem('theme') === 'true'){
+ document.body.classList.add('light');
+}
 /* INIT */
 document.getElementById('tipo').addEventListener('change', actualizarCategorias);
 
