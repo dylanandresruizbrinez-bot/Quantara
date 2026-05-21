@@ -16,7 +16,17 @@
 <body>
 <div class="container">
 <h1>Coin Simulator</h1>
+<div class="card">
+<h3>Administrador actual</h3>
 
+<select id="selectorAdmin" onchange="cambiarAdmin()"></select>
+
+<input type="text" id="nuevoAdmin" placeholder="Nuevo administrador">
+
+<button onclick="crearAdmin()">
+Agregar administrador
+</button>
+</div>
 <!-- FORM -->
 <div class="card">
 <select id="tipo">
@@ -90,13 +100,20 @@
 <button onclick="render()">Calcular</button>
 <p id="prediccion"></p>
 </div>
-
+<div class="card">
+<h3>Total actual</h3>
+<p id="totalActual"></p>
+</div>
 <p id="alerta" class="alert"></p>
 
 </div>
 
 <script>
-let movimientos = JSON.parse(localStorage.getItem('movimientos')) || [];
+let administradores = JSON.parse(localStorage.getItem('administradores')) || {
+  "Personal": []
+};
+
+let adminActual = "Personal";
 let presupuestos = JSON.parse(localStorage.getItem('presupuestos')) || {};
 let lineChart, barChart;
 
@@ -107,6 +124,54 @@ const categoriasPorTipo = {
   deuda: ["Pago de deuda", "General"]
 };
 
+  function crearAdmin(){
+ let nombre = document.getElementById('nuevoAdmin').value.trim();
+
+ if(!nombre){
+   alert('Escribe un nombre');
+   return;
+ }
+
+ if(administradores[nombre]){
+   alert('Ya existe');
+   return;
+ }
+
+ administradores[nombre] = [];
+
+ actualizarAdmins();
+ guardarAdmins();
+
+ document.getElementById('nuevoAdmin').value = '';
+}
+  function cambiarAdmin(){
+ adminActual = document.getElementById('selectorAdmin').value;
+ render();
+}
+  function actualizarAdmins(){
+ let selector = document.getElementById('selectorAdmin');
+
+ selector.innerHTML = '';
+
+ Object.keys(administradores).forEach(nombre => {
+   let option = document.createElement('option');
+
+   option.value = nombre;
+   option.textContent = nombre;
+
+   if(nombre === adminActual){
+     option.selected = true;
+   }
+
+   selector.appendChild(option);
+ });
+}
+  function guardarAdmins(){
+ localStorage.setItem(
+   'administradores',
+   JSON.stringify(administradores)
+ );
+}
 function actualizarCategorias(){
   const tipo = document.getElementById('tipo').value;
   const select = document.getElementById('categoria');
@@ -159,7 +224,13 @@ function agregar(){
  if(isNaN(monto) || monto <= 0) return alert('Monto inválido');
  if(!fecha) return alert('Selecciona fecha');
 
- movimientos.push({tipo, categoria, monto, interes, fecha});
+ administradores[adminActual].push({
+ tipo,
+ categoria,
+ monto,
+ interes,
+ fecha
+});
 
  document.getElementById('monto').value='';
  document.getElementById('interes').value='';
@@ -181,7 +252,7 @@ function setPresupuesto(){
 }
 
 function render(){
-
+ let movimientos = administradores[adminActual] || [];
  let desde = document.getElementById('desde').value;
  let hasta = document.getElementById('hasta').value;
 
@@ -271,8 +342,31 @@ function render(){
  });
 
  prediccion(valores, fechas);
+  document.getElementById('totalActual').textContent =
+ '$' + calcularTotal().toFixed(2);
 }
 
+  function calcularTotal(){
+ let movimientos = administradores[adminActual] || [];
+
+ let total = 0;
+
+ movimientos.forEach(m => {
+
+   let val = m.tipo === 'deuda'
+     ? m.monto * Math.pow(1 + m.interes / 100, 3)
+     : m.monto;
+
+   if(m.tipo === 'ingreso'){
+     total += val;
+   } else {
+     total -= val;
+   }
+ });
+
+ return total;
+}
+                     
 function prediccion(vals, fechas){
  if(vals.length < 2) return;
 
