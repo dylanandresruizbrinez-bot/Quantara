@@ -8,6 +8,7 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
@@ -117,6 +118,9 @@ let adminActual = "Personal";
 let presupuestos = JSON.parse(localStorage.getItem('presupuestos')) || {};
 let lineChart, barChart;
 
+  if('serviceWorker' in navigator){
+ navigator.serviceWorker.register('sw.js')
+}
 /* 🔥 CATEGORÍAS DINÁMICAS */
 const categoriasPorTipo = {
   ingreso: ["Empresa/Trabajo", "Cobro de deuda", "General"],
@@ -204,8 +208,15 @@ function cargarCategoriasPresupuesto(){
 
 /* CORE */
 function guardar(){
- localStorage.setItem('movimientos', JSON.stringify(movimientos));
- localStorage.setItem('presupuestos', JSON.stringify(presupuestos));
+ localStorage.setItem(
+   'administradores',
+   JSON.stringify(administradores)
+ );
+
+ localStorage.setItem(
+   'presupuestos',
+   JSON.stringify(presupuestos)
+ );
 }
 
 function eliminarMovimiento(i){
@@ -253,17 +264,19 @@ function setPresupuesto(){
 
 function render(){
  let movimientos = administradores[adminActual] || [];
- let desde = document.getElementById('desde').value;
- let hasta = document.getElementById('hasta').value;
 
- let filtrados = movimientos.filter(m=>{
+
+ let porFecha={}, porCat={}, alertaTxt="";
+
+   let desde = document.getElementById('desde').value;
+ let hasta = document.getElementById('hasta').value;
+  
+   let filtrados = movimientos.filter(m=>{
    if(desde && m.fecha < desde) return false;
    if(hasta && m.fecha > hasta) return false;
    return true;
  });
-
- let porFecha={}, porCat={}, alertaTxt="";
-
+  
  filtrados.forEach(m=>{
    let val = m.tipo==='deuda'
      ? m.monto*Math.pow(1+m.interes/100,3)
