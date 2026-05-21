@@ -19,10 +19,18 @@
 <h1>Coin Simulator</h1>
 <div class="card">
 <h3>Administrador actual</h3>
+  <div class="card">
+<h3>Resumen</h3>
+<p id="estadoGuardado"></p>
+<p id="ingresosTotal"></p>
+<p id="gastosTotal"></p>
+
+</div>
 
 <select id="selectorAdmin" onchange="cambiarAdmin()"></select>
 
 <input type="text" id="nuevoAdmin" placeholder="Nuevo administrador">
+  <input type="text" id="busqueda" placeholder="Buscar movimiento">
 
 <button onclick="crearAdmin()">
 Agregar administrador
@@ -82,7 +90,11 @@ Cambiar tema
 <button onclick="exportarExcel()">Exportar</button>
 <input type="file" id="inputExcel">
 <button onclick="importarExcel()">Importar</button>
+  <button onclick="exportarJSON()">
+Exportar JSON
+</button>
 </div>
+  
 
 <!-- GRÁFICAS -->
 <div class="card">
@@ -294,6 +306,14 @@ function agregar(){
  document.getElementById('monto').value='';
  document.getElementById('interes').value='';
  document.getElementById('fecha').value='';
+  
+  document.getElementById('estadoGuardado')
+.textContent = 'Guardado automático';
+
+setTimeout(()=>{
+ document.getElementById('estadoGuardado')
+ .textContent = '';
+},1500);
 
  guardar();
  render();
@@ -318,13 +338,15 @@ function render(){
 
    let desde = document.getElementById('desde').value;
  let hasta = document.getElementById('hasta').value;
-  
+  let ingresos = 0;
+let gastos = 0;
    let filtrados = movimientos.filter(m=>{
    if(desde && m.fecha < desde) return false;
    if(hasta && m.fecha > hasta) return false;
    return true;
  });
-  
+  let filtro =
+ document.getElementById('busqueda')?.value?.toLowerCase() || '';
  filtrados.forEach(m=>{
    let val = m.tipo==='deuda'
      ? m.monto*Math.pow(1+m.interes/100,3)
@@ -337,7 +359,24 @@ function render(){
 
    if(presupuestos[m.categoria] && Math.abs(porCat[m.categoria])>presupuestos[m.categoria]){
      alertaTxt=`Excediste ${m.categoria}`;
+      if(
+ filtro &&
+ !m.categoria.toLowerCase().includes(filtro)
+        if(m.tipo === 'ingreso'){
+ ingresos += val;
+}else{
+ gastos += val;
+}
    }
+
+){
+ return;
+}
+   document.getElementById('ingresosTotal')
+.textContent = 'Ingresos: $' + ingresos.toFixed(2);
+
+document.getElementById('gastosTotal')
+.textContent = 'Gastos: $' + gastos.toFixed(2);
  });
 
  document.getElementById('alerta').textContent=alertaTxt;
@@ -487,6 +526,27 @@ function importarExcel(){
  };
 
  reader.readAsArrayBuffer(file);
+}
+  function exportarJSON(){
+
+ let data = JSON.stringify(
+   administradores,
+   null,
+   2
+ );
+
+ let blob = new Blob(
+   [data],
+   {type:'application/json'}
+ );
+
+ let a = document.createElement('a');
+
+ a.href = URL.createObjectURL(blob);
+
+ a.download = 'coin-simulator.json';
+
+ a.click();
 }
 function toggleTheme(){
 
