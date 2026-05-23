@@ -280,11 +280,12 @@ function guardar(){
 }
 
 function eliminarMovimiento(i){
- movimientos.splice(i,1);
+
+ administradores[adminActual].splice(i,1);
+
  guardar();
  render();
 }
-
 function agregar(){
  let tipo = document.getElementById('tipo').value;
  let categoria = document.getElementById('categoria').value;
@@ -347,40 +348,44 @@ let gastos = 0;
  });
   let filtro =
  document.getElementById('busqueda')?.value?.toLowerCase() || '';
- filtrados.forEach(m=>{
+ 
+filtrados.forEach(m=>{
+
+   // filtro búsqueda
+   if(
+     filtro &&
+     !m.categoria.toLowerCase().includes(filtro)
+   ){
+     return;
+   }
+
    let val = m.tipo==='deuda'
      ? m.monto*Math.pow(1+m.interes/100,3)
      : m.monto;
 
-   let signed = m.tipo==='ingreso'?val:-val;
+   let signed = m.tipo==='ingreso'
+     ? val
+     : -val;
 
+   // resumen
+   if(m.tipo === 'ingreso'){
+     ingresos += val;
+   }else{
+     gastos += val;
+   }
+
+   // gráficos
    porFecha[m.fecha]=(porFecha[m.fecha]||0)+signed;
    porCat[m.categoria]=(porCat[m.categoria]||0)+signed;
 
-   if(presupuestos[m.categoria] && Math.abs(porCat[m.categoria])>presupuestos[m.categoria]){
-     alertaTxt=`Excediste ${m.categoria}`;
-      if(
- filtro &&
- !m.categoria.toLowerCase().includes(filtro)
-        if(m.tipo === 'ingreso'){
- ingresos += val;
-}else{
- gastos += val;
-}
+   // presupuesto
+   if(
+     presupuestos[m.categoria] &&
+     Math.abs(porCat[m.categoria]) > presupuestos[m.categoria]
+   ){
+     alertaTxt = `Excediste ${m.categoria}`;
    }
-
-){
- return;
-}
-   document.getElementById('ingresosTotal')
-.textContent = 'Ingresos: $' + ingresos.toFixed(2);
-
-document.getElementById('gastosTotal')
-.textContent = 'Gastos: $' + gastos.toFixed(2);
- });
-
- document.getElementById('alerta').textContent=alertaTxt;
-
+});
  /* LISTA */
  let cont = document.getElementById('listaMovimientos');
  cont.innerHTML='';
@@ -506,7 +511,9 @@ function prediccion(vals, fechas){
 
 /* EXCEL */
 function exportarExcel(){
- const ws = XLSX.utils.json_to_sheet(movimientos);
+const ws = XLSX.utils.json_to_sheet(
+ administradores[adminActual]
+);
  const wb = XLSX.utils.book_new();
  XLSX.utils.book_append_sheet(wb, ws, "Movimientos");
  XLSX.writeFile(wb, "datos.xlsx");
@@ -520,7 +527,8 @@ function importarExcel(){
    const data = new Uint8Array(e.target.result);
    const wb = XLSX.read(data,{type:'array'});
    const ws = wb.Sheets[wb.SheetNames[0]];
-   movimientos = XLSX.utils.sheet_to_json(ws);
+administradores[adminActual] =
+ XLSX.utils.sheet_to_json(ws);
    guardar();
    render();
  };
@@ -569,6 +577,7 @@ const barChartEl = document.getElementById('barChart');
 
 actualizarCategorias();
 cargarCategoriasPresupuesto();
+actualizarAdmins();
 render();
 </script>
 
