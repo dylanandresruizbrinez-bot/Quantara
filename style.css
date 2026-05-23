@@ -369,3 +369,21 @@ canvas{
     font-size:.88rem;
   }
 }
+/* INTERACCION DINAMICA */
+.mov-item{
+  transition:
+  transform .25s ease,
+  opacity .25s ease,
+  filter .25s ease;
+}
+
+.mov-item.focus{
+  transform:scale(1.03);
+  z-index:10;
+}
+
+.mov-item.blur{
+  transform:scale(.97);
+  opacity:.55;
+  filter:blur(.4px);
+}
