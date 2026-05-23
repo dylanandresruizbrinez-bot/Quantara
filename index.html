@@ -330,7 +330,36 @@ function setPresupuesto(){
    render();
  }
 }
+function activarInteracciones(){
 
+ const items =
+ document.querySelectorAll('.mov-item');
+
+ items.forEach(item => {
+
+   item.addEventListener('mouseenter',()=>{
+
+     items.forEach(i=>{
+
+       i.classList.remove('focus');
+       i.classList.add('blur');
+     });
+
+     item.classList.remove('blur');
+     item.classList.add('focus');
+   });
+
+   item.addEventListener('mouseleave',()=>{
+
+     items.forEach(i=>{
+
+       i.classList.remove('focus');
+       i.classList.remove('blur');
+     });
+   });
+
+ });
+}
 function render(){
  let movimientos = administradores[adminActual] || [];
 
@@ -447,6 +476,7 @@ filtrados.forEach(m=>{
  });
 
  prediccion(valores, fechas);
+  activarInteracciones();
   document.getElementById('totalActual').textContent =
  '$' + calcularTotal().toFixed(2);
 }
