@@ -1,9 +1,13 @@
 :root{
   --bg:#050505;
   --card:#140b02;
-  --accent:#ff9500;
+
+  /* NARANJA ORIGINAL */
+  --accent:#ff8c00;
+
   --text:#d7d7d7;
-  --soft:rgba(255,149,0,.08);
+
+  --soft:rgba(255,140,0,.08);
 }
 
 *{
@@ -28,12 +32,16 @@ h1{
   margin-bottom:30px;
   font-size:2rem;
   text-align:center;
+
+  text-shadow:
+  0 0 10px rgba(255,140,0,.4);
 }
 
 /* CONTENEDOR */
 .container{
   width:100%;
   max-width:850px;
+
   display:flex;
   flex-direction:column;
   gap:35px;
@@ -52,7 +60,7 @@ h1{
   border-left:4px solid var(--accent);
 
   box-shadow:
-  0 0 25px rgba(255,149,0,.06);
+  0 0 25px rgba(255,140,0,.06);
 
   overflow:hidden;
 
@@ -66,12 +74,11 @@ h1{
   transform:translateY(-4px);
 
   box-shadow:
-  0 0 35px rgba(255,149,0,.12);
+  0 0 35px rgba(255,140,0,.14);
 }
 
-/* NUMERO DECORATIVO */
+/* CIRCULO DECORATIVO */
 .card::before{
-
   content:'';
 
   position:absolute;
@@ -87,14 +94,20 @@ h1{
   left:18px;
 
   opacity:.95;
+
+  box-shadow:
+  0 0 18px rgba(255,140,0,.45);
 }
 
 /* TITULOS */
 .card h3{
   margin-top:0;
   margin-left:55px;
+
   color:white;
+
   font-size:1.15rem;
+
   margin-bottom:20px;
 }
 
@@ -124,7 +137,8 @@ button{
   transition:
   border .2s ease,
   transform .2s ease,
-  background .2s ease;
+  background .2s ease,
+  box-shadow .2s ease;
 }
 
 /* FOCUS */
@@ -136,6 +150,9 @@ select:focus{
   background:#0d0d0d;
 
   transform:scale(1.01);
+
+  box-shadow:
+  0 0 10px rgba(255,140,0,.25);
 }
 
 /* BOTONES */
@@ -151,17 +168,21 @@ button{
 
   transition:
   transform .2s ease,
-  opacity .2s ease;
+  opacity .2s ease,
+  box-shadow .2s ease;
 }
 
 button:hover{
   transform:scale(1.02);
-  opacity:.9;
+
+  opacity:.92;
+
+  box-shadow:
+  0 0 16px rgba(255,140,0,.35);
 }
 
 /* LISTA */
 #listaMovimientos{
-
   display:flex;
   flex-direction:column;
   gap:18px;
@@ -201,6 +222,9 @@ button:hover{
   font-weight:bold;
 
   flex-shrink:0;
+
+  box-shadow:
+  0 0 15px rgba(255,140,0,.3);
 }
 
 /* CUERPO */
@@ -210,7 +234,7 @@ button:hover{
 
   background:rgba(0,0,0,.45);
 
-  border:1px solid rgba(255,149,0,.15);
+  border:1px solid rgba(255,140,0,.15);
 
   border-radius:14px;
 
@@ -219,7 +243,7 @@ button:hover{
   line-height:1.6;
 }
 
-/* ELIMINAR */
+/* DELETE */
 .delete-btn{
 
   margin-top:10px;
@@ -245,6 +269,8 @@ canvas{
   border-radius:12px;
 
   padding:10px;
+
+  border:1px solid rgba(255,140,0,.08);
 }
 
 /* ALERTAS */
@@ -257,321 +283,23 @@ canvas{
   font-weight:bold;
 }
 
-/* MODO CLARO */
-.light{
-
-  --bg:#f4f4f4;
-  --card:#ffffff;
-  --text:#222;
-  --soft:rgba(0,0,0,.05);
+/* RESUMEN */
+#ingresosTotal{
+  color:#33ff99;
 }
 
-.light body{
-  background:#f4f4f4;
+#gastosTotal{
+  color:#ff5c5c;
 }
 
-/* INTERACCION DINAMICA */
-.mov-item.focus{
-  transform:scale(1.03);
-  z-index:10;
-}
-
-.mov-item.blur{
-  transform:scale(.97);
-  opacity:.55;
-  filter:blur(.4px);
-}
-
-/* SCROLL */
-::-webkit-scrollbar{
-  width:10px;
-}
-
-::-webkit-scrollbar-thumb{
-  background:var(--accent);
-  border-radius:20px;
-}
-
-::-webkit-scrollbar-track{
-  background:#111;
-}
-
-/* RESPONSIVE */
-@media(max-width:700px){
-
-  body{
-    padding:18px 10px;
-  }
-
-  .card{
-    padding:22px;
-  }
-
-  h1{
-    font-size:1.7rem;
-  }
-}:root{
-  --bg:#050505;
-  --card:#140b02;
-  --accent:#ff9500;
-  --text:#d7d7d7;
-  --soft:rgba(255,149,0,.08);
-}
-
-*{
-  box-sizing:border-box;
-}
-
-body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
-  margin:0;
-  padding:30px 15px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-}
-
-/* TITULO */
-h1{
+#totalActual{
+  font-size:1.3rem;
+  font-weight:bold;
   color:var(--accent);
-  letter-spacing:2px;
-  margin-bottom:30px;
-  font-size:2rem;
-  text-align:center;
 }
 
-/* CONTENEDOR */
-.container{
-  width:100%;
-  max-width:850px;
-  display:flex;
-  flex-direction:column;
-  gap:35px;
-}
-
-/* TARJETAS */
-.card{
-  position:relative;
-
-  background:var(--card);
-
-  border-radius:18px;
-
-  padding:28px;
-
-  border-left:4px solid var(--accent);
-
-  box-shadow:
-  0 0 25px rgba(255,149,0,.06);
-
-  overflow:hidden;
-
-  transition:
-  transform .25s ease,
-  box-shadow .25s ease;
-}
-
-/* EFECTO HOVER */
-.card:hover{
-  transform:translateY(-4px);
-
-  box-shadow:
-  0 0 35px rgba(255,149,0,.12);
-}
-
-/* NUMERO DECORATIVO */
-.card::before{
-
-  content:'';
-
-  position:absolute;
-
-  width:42px;
-  height:42px;
-
-  border-radius:50%;
-
-  background:var(--accent);
-
-  top:18px;
-  left:18px;
-
-  opacity:.95;
-}
-
-/* TITULOS */
-.card h3{
-  margin-top:0;
-  margin-left:55px;
-  color:white;
-  font-size:1.15rem;
-  margin-bottom:20px;
-}
-
-/* INPUTS */
-input,
-select,
-button{
-
-  width:100%;
-
-  margin-top:10px;
-
-  padding:14px;
-
-  border:none;
-
-  border-radius:12px;
-
-  background:#050505;
-
-  color:var(--text);
-
-  font-size:.95rem;
-
-  outline:none;
-
-  transition:
-  border .2s ease,
-  transform .2s ease,
-  background .2s ease;
-}
-
-/* FOCUS */
-input:focus,
-select:focus{
-
-  border:1px solid var(--accent);
-
-  background:#0d0d0d;
-
-  transform:scale(1.01);
-}
-
-/* BOTONES */
-button{
-
-  background:var(--accent);
-
-  color:black;
-
-  font-weight:bold;
-
-  cursor:pointer;
-
-  transition:
-  transform .2s ease,
-  opacity .2s ease;
-}
-
-button:hover{
-  transform:scale(1.02);
-  opacity:.9;
-}
-
-/* LISTA */
-#listaMovimientos{
-
-  display:flex;
-  flex-direction:column;
-  gap:18px;
-}
-
-/* ITEMS */
-.mov-item{
-
-  display:flex;
-
-  gap:15px;
-
-  align-items:flex-start;
-
-  transition:
-  transform .25s ease,
-  opacity .25s ease,
-  filter .25s ease;
-}
-
-/* AVATAR */
-.avatar{
-
-  width:42px;
-  height:42px;
-
-  border-radius:50%;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  background:var(--accent);
-
-  color:black;
-
-  font-weight:bold;
-
-  flex-shrink:0;
-}
-
-/* CUERPO */
-.cuerpo{
-
-  flex:1;
-
-  background:rgba(0,0,0,.45);
-
-  border:1px solid rgba(255,149,0,.15);
-
-  border-radius:14px;
-
-  padding:14px 16px;
-
-  line-height:1.6;
-}
-
-/* ELIMINAR */
-.delete-btn{
-
-  margin-top:10px;
-
-  background:#ff3b30;
-
-  color:white;
-
-  width:auto;
-
-  padding:7px 12px;
-
-  font-size:.8rem;
-}
-
-/* GRAFICAS */
-canvas{
-
-  margin-top:20px;
-
-  background:#080808;
-
-  border-radius:12px;
-
-  padding:10px;
-}
-
-/* ALERTAS */
-.alert{
-
-  color:#ff5252;
-
-  text-align:center;
-
-  font-weight:bold;
-}
-
-/* MODO CLARO */
+/* LIGHT MODE */
 .light{
-
   --bg:#f4f4f4;
   --card:#ffffff;
   --text:#222;
@@ -580,6 +308,10 @@ canvas{
 
 .light body{
   background:#f4f4f4;
+}
+
+.light .cuerpo{
+  background:#f8f8f8;
 }
 
 /* INTERACCION DINAMICA */
