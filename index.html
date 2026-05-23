@@ -583,68 +583,95 @@ filtrados.forEach(m=>{
 
  /* CHARTS */
  if(lineChart) lineChart.destroy();
- lineChart = new Chart(lineChartEl,{
-   type:'line',
-   data:{
-     labels: fechas,
-     datasets:[{
-       data: valores,
-       borderColor:'#00c853',
-       segment:{
-         borderColor: ctx => ctx.p1.parsed.y>=0 ? '#00c853' : '#ff5252'
-       }
-     }]
-     options:{
- responsive:true,
- plugins:{
-   legend:{
-     labels:{
-       color:'#d7d7d7'
-     }
-   }
- },
- scales:{
-   x:{
-     ticks:{color:'#d7d7d7'}
-   },
-   y:{
-     ticks:{color:'#d7d7d7'}
-   }
- }
-}
-   }
- });
-  
+lineChart = new Chart(lineChartEl,{
+  type:'line',
 
+  data:{
+    labels: fechas,
+
+    datasets:[{
+      data: valores,
+      borderColor:'#ff8c00',
+
+      segment:{
+        borderColor: ctx =>
+          ctx.p1.parsed.y >= 0
+          ? '#ff8c00'
+          : '#ff5252'
+      }
+    }]
+  }, // <- ESTA COMA ES OBLIGATORIA
+
+  options:{
+    responsive:true,
+
+    plugins:{
+      legend:{
+        labels:{
+          color:'#d7d7d7'
+        }
+      }
+    },
+
+    scales:{
+      x:{
+        ticks:{
+          color:'#d7d7d7'
+        }
+      },
+
+      y:{
+        ticks:{
+          color:'#d7d7d7'
+        }
+      }
+    }
+  }
+
+});
  if(barChart) barChart.destroy();
  barChart = new Chart(barChartEl,{
-   type:'bar',
-   data:{
-     labels:Object.keys(porCat),
-     datasets:[{
-       data:Object.values(porCat),
-       backgroundColor:Object.values(porCat).map(v=>v>=0?'#00c853':'#ff5252')
-     }]
-     options:{
- responsive:true,
- plugins:{
-   legend:{
-     labels:{
-       color:'#d7d7d7'
-     }
-   }
- },
- scales:{
-   x:{
-     ticks:{color:'#d7d7d7'}
-   },
-   y:{
-     ticks:{color:'#d7d7d7'}
-   }
- }
-}
-   }
- });
+  type:'bar',
+
+  data:{
+    labels:Object.keys(porCat),
+
+    datasets:[{
+      data:Object.values(porCat),
+
+      backgroundColor:Object
+      .values(porCat)
+      .map(v => v >= 0 ? '#ff8c00' : '#ff5252')
+    }]
+  }, // <- COMA
+
+  options:{
+    responsive:true,
+
+    plugins:{
+      legend:{
+        labels:{
+          color:'#d7d7d7'
+        }
+      }
+    },
+
+    scales:{
+      x:{
+        ticks:{
+          color:'#d7d7d7'
+        }
+      },
+
+      y:{
+        ticks:{
+          color:'#d7d7d7'
+        }
+      }
+    }
+  }
+
+});
 
  prediccion(valores, fechas);
   activarInteracciones();
