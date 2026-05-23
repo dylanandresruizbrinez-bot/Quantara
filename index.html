@@ -16,120 +16,254 @@
 
 <body>
 <div class="container">
-<h1>Coin Simulator</h1>
-<div class="card">
-<h3>Administrador actual</h3>
+
+  <h1>COIN SIMULATOR</h1>
+
+  <!-- ADMIN -->
   <div class="card">
-<h3>Resumen</h3>
-<p id="estadoGuardado"></p>
-<p id="ingresosTotal"></p>
-<p id="gastosTotal"></p>
+
+    <h3>Administrador actual</h3>
+
+    <div class="top-grid">
+
+      <!-- PANEL IZQUIERDO -->
+      <div>
+
+        <div class="row">
+          <select id="selectorAdmin" onchange="cambiarAdmin()"></select>
+
+          <input
+            type="text"
+            id="nuevoAdmin"
+            placeholder="Nuevo administrador"
+          >
+        </div>
+
+        <div class="row">
+          <button onclick="crearAdmin()">
+            Agregar
+          </button>
+
+          <button onclick="renombrarAdmin()">
+            Cambiar nombre
+          </button>
+
+          <button onclick="eliminarAdmin()">
+            Eliminar
+          </button>
+
+          <button onclick="toggleTheme()">
+            Tema
+          </button>
+        </div>
+
+      </div>
+
+      <!-- PANEL DERECHO -->
+      <div class="resume-box">
+
+        <h4>Resumen</h4>
+
+        <p id="estadoGuardado"></p>
+
+        <p id="ingresosTotal"></p>
+
+        <p id="gastosTotal"></p>
+
+        <p>
+          Total actual:
+          <strong id="totalActual"></strong>
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- NUEVO MOVIMIENTO -->
+  <div class="card">
+
+    <h3>Nuevo movimiento</h3>
+
+    <div class="row">
+
+      <select id="tipo">
+        <option value="ingreso">Ingreso</option>
+        <option value="gasto">Gasto</option>
+        <option value="deuda">Deuda</option>
+      </select>
+
+      <select id="categoria"></select>
+
+      <input
+        type="number"
+        id="monto"
+        placeholder="Monto"
+      >
+
+      <input
+        type="number"
+        id="interes"
+        placeholder="Interés %"
+      >
+
+      <input
+        type="date"
+        id="fecha"
+      >
+
+      <button onclick="agregar()">
+        Agregar
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- FILTROS -->
+  <div class="double-grid">
+
+    <!-- FILTRO -->
+    <div class="card">
+
+      <h3>Filtro por fecha</h3>
+
+      <div class="row">
+
+        <input type="date" id="desde">
+
+        <input type="date" id="hasta">
+
+        <button onclick="render()">
+          Aplicar filtro
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- PRESUPUESTO -->
+    <div class="card">
+
+      <h3>Presupuesto por categoría</h3>
+
+      <div class="row">
+
+        <select id="catPresupuesto"></select>
+
+        <input
+          type="number"
+          id="limite"
+          placeholder="Límite"
+        >
+
+        <button onclick="setPresupuesto()">
+          Guardar límite
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- MOVIMIENTOS -->
+  <div class="card">
+
+    <h3>Movimientos</h3>
+
+    <input
+      type="text"
+      id="busqueda"
+      placeholder="Buscar movimiento..."
+    >
+
+    <div id="listaMovimientos"></div>
+
+  </div>
+
+  <!-- GRAFICAS -->
+  <div class="double-grid">
+
+    <div class="card">
+
+      <h3>Gráfica temporal</h3>
+
+      <canvas id="lineChart"></canvas>
+
+    </div>
+
+    <div class="card">
+
+      <h3>Gráfica categorías</h3>
+
+      <canvas id="barChart"></canvas>
+
+    </div>
+
+  </div>
+
+  <!-- PREDICCION -->
+  <div class="card">
+
+    <h3>Predicción</h3>
+
+    <div class="row">
+
+      <select id="unidadTiempo">
+        <option value="dias">Días</option>
+        <option value="semanas">Semanas</option>
+        <option value="meses">Meses</option>
+        <option value="semestres">Semestres</option>
+        <option value="años">Años</option>
+        <option value="decadas">Décadas</option>
+      </select>
+
+      <input
+        type="number"
+        id="cantidadTiempo"
+        placeholder="Cantidad"
+      >
+
+      <button onclick="render()">
+        Calcular
+      </button>
+
+      <p id="prediccion"></p>
+
+    </div>
+
+  </div>
+
+  <!-- EXPORTAR -->
+  <div class="card">
+
+    <h3>Excel / JSON</h3>
+
+    <div class="row">
+
+      <button onclick="exportarExcel()">
+        Exportar Excel
+      </button>
+
+      <input type="file" id="inputExcel">
+
+      <button onclick="importarExcel()">
+        Importar Excel
+      </button>
+
+      <button onclick="exportarJSON()">
+        Exportar JSON
+      </button>
+
+    </div>
+
+  </div>
+
+  <p id="alerta" class="alert"></p>
 
 </div>
-  <button onclick="toggleTheme()">
-Cambiar tema
-</button>
-<select id="selectorAdmin" onchange="cambiarAdmin()"></select>
-
-<input type="text" id="nuevoAdmin" placeholder="Nuevo administrador">
-  <input type="text" id="busqueda" placeholder="Buscar movimiento">
-
-<button onclick="crearAdmin()">
-Agregar administrador
-</button>
-  <button onclick="renombrarAdmin()">
-Cambiar nombre
-</button>
-  <button onclick="eliminarAdmin()">
-Eliminar administrador
-</button>
-
-</div>
-<!-- FORM -->
-<div class="card">
-<select id="tipo">
-<option value="ingreso">Ingreso</option>
-<option value="gasto">Gasto</option>
-<option value="deuda">Deuda</option>
-</select>
-
-<select id="categoria"></select>
-
-<input type="number" id="monto" placeholder="Monto">
-<input type="number" id="interes" placeholder="Interés %">
-<input type="date" id="fecha">
-
-<button onclick="agregar()">Agregar</button>
-</div>
-
-<!-- FILTRO -->
-<div class="card">
-<h3>Filtro por fecha</h3>
-<input type="date" id="desde">
-<input type="date" id="hasta">
-<button onclick="render()">Aplicar filtro</button>
-</div>
-
-<!-- MOVIMIENTOS -->
-<div class="card">
-<h3>Movimientos</h3>
-<div id="listaMovimientos"></div>
-</div>
-
-<!-- PRESUPUESTO -->
-<div class="card">
-<h3>Presupuesto por categoría</h3>
-<select id="catPresupuesto"></select>
-<input type="number" id="limite" placeholder="Límite">
-<button onclick="setPresupuesto()">Guardar límite</button>
-</div>
-
-<!-- EXCEL -->
-<div class="card">
-<h3>Excel</h3>
-<button onclick="exportarExcel()">Exportar</button>
-<input type="file" id="inputExcel">
-<button onclick="importarExcel()">Importar</button>
-  <button onclick="exportarJSON()">
-Exportar JSON
-</button>
-</div>
-  
-
-<!-- GRÁFICAS -->
-<div class="card">
-<h3>Gráfica temporal</h3>
-<canvas id="lineChart"></canvas>
-</div>
-
-<div class="card">
-<h3>Gráfica categorías</h3>
-<canvas id="barChart"></canvas>
-</div>
-
-<div class="card">
-<h3>Predicción</h3>
-  <select id="unidadTiempo">
-  <option value="dias">Días</option>
-  <option value="semanas">Semanas</option>
-  <option value="meses">Meses</option>
-  <option value="semestres">Semestres</option>
-  <option value="años">Años</option>
-  <option value="decadas">Décadas</option>
-</select>
-
-<input type="number" id="cantidadTiempo" placeholder="Cantidad (ej: 3)">
-<button onclick="render()">Calcular</button>
-<p id="prediccion"></p>
-</div>
-<div class="card">
-<h3>Total actual</h3>
-<p id="totalActual"></p>
-</div>
-<p id="alerta" class="alert"></p>
-
-</div>
-
 <script>
 let administradores = JSON.parse(localStorage.getItem('administradores')) || {
   "Personal": []
@@ -460,8 +594,27 @@ filtrados.forEach(m=>{
          borderColor: ctx => ctx.p1.parsed.y>=0 ? '#00c853' : '#ff5252'
        }
      }]
+     options:{
+ responsive:true,
+ plugins:{
+   legend:{
+     labels:{
+       color:'#d7d7d7'
+     }
+   }
+ },
+ scales:{
+   x:{
+     ticks:{color:'#d7d7d7'}
+   },
+   y:{
+     ticks:{color:'#d7d7d7'}
+   }
+ }
+}
    }
  });
+  
 
  if(barChart) barChart.destroy();
  barChart = new Chart(barChartEl,{
@@ -472,6 +625,24 @@ filtrados.forEach(m=>{
        data:Object.values(porCat),
        backgroundColor:Object.values(porCat).map(v=>v>=0?'#00c853':'#ff5252')
      }]
+     options:{
+ responsive:true,
+ plugins:{
+   legend:{
+     labels:{
+       color:'#d7d7d7'
+     }
+   }
+ },
+ scales:{
+   x:{
+     ticks:{color:'#d7d7d7'}
+   },
+   y:{
+     ticks:{color:'#d7d7d7'}
+   }
+ }
+}
    }
  });
 
