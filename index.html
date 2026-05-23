@@ -515,12 +515,18 @@ let gastos = 0;
 filtrados.forEach(m=>{
 
    // filtro búsqueda
-   if(
-     filtro &&
-     !m.categoria.toLowerCase().includes(filtro)
-   ){
-     return;
-   }
+ if(
+  filtro &&
+  !(
+    m.tipo.toLowerCase().includes(filtro) ||
+    m.categoria.toLowerCase().includes(filtro) ||
+    String(m.monto).includes(filtro) ||
+    String(m.fecha).includes(filtro) ||
+    String(m.interes).includes(filtro)
+  )
+){
+  return;
+}
 
    let val = m.tipo==='deuda'
      ? m.monto*Math.pow(1+m.interes/100,3)
@@ -844,6 +850,9 @@ if(localStorage.getItem('theme') === 'true'){
 }
 /* INIT */
 document.getElementById('tipo').addEventListener('change', actualizarCategorias);
+  document
+.getElementById('busqueda')
+.addEventListener('input', render);
 
 const lineChartEl = document.getElementById('lineChart');
 const barChartEl = document.getElementById('barChart');
