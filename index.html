@@ -675,31 +675,46 @@ options:{
     }]
   }, // <- COMA
 
-  options:{
-    responsive:true,
+ options:{
+  responsive:true,
 
-    plugins:{
-      legend:{
-        labels:{
-          color:'#d7d7d7'
-        }
+  plugins:{
+    legend:{
+      labels:{
+        color: document.body.classList.contains('light')
+          ? '#111'
+          : '#d7d7d7'
+      }
+    }
+  },
+
+  scales:{
+
+    x:{
+      ticks:{
+        color: document.body.classList.contains('light')
+          ? '#111'
+          : '#d7d7d7'
+      },
+
+      grid:{
+        color:'rgba(255,255,255,.08)'
       }
     },
 
-    scales:{
-      x:{
-        ticks:{
-          color:'#d7d7d7'
-        }
+    y:{
+      ticks:{
+        color: document.body.classList.contains('light')
+          ? '#111'
+          : '#d7d7d7'
       },
 
-      y:{
-        ticks:{
-          color:'#d7d7d7'
-        }
+      grid:{
+        color:'rgba(255,255,255,.08)'
       }
     }
   }
+}
 
 });
 
