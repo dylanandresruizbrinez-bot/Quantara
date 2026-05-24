@@ -22,7 +22,7 @@
   <!-- ADMIN -->
   <div class="card">
 
-    <h3>Administrador actual</h3>
+    <h3>Administrar billeteras</h3>
 
     <div class="top-grid">
 
@@ -45,18 +45,20 @@
           </button>
 
           <button onclick="renombrarAdmin()">
-            Cambiar nombre
+            Renombrar
           </button>
 
           <button onclick="eliminarAdmin()">
             Eliminar
           </button>
-
-          <button onclick="toggleTheme()">
-            Tema
-          </button>
         </div>
-
+      
+        <div>
+            <button onclick="toggleTheme()">
+            Tema
+            </button>
+       </div>
+        
       </div>
 
       <!-- PANEL DERECHO -->
@@ -89,8 +91,8 @@
     <div class="row">
 
       <select id="tipo">
-        <option value="ingreso">Ingreso</option>
-        <option value="gasto">Gasto</option>
+        <option value="ingreso">Ganancia</option>
+        <option value="gasto">Perdida</option>
         <option value="deuda">Deuda</option>
       </select>
 
@@ -146,7 +148,7 @@
     <!-- PRESUPUESTO -->
     <div class="card">
 
-      <h3>Presupuesto por categoría</h3>
+      <h3>Limite de billetera</h3>
 
       <div class="row">
 
@@ -171,7 +173,7 @@
   <!-- MOVIMIENTOS -->
   <div class="card">
 
-    <h3>Movimientos</h3>
+    <h3>Historial</h3>
 
     <input
       type="text"
@@ -188,7 +190,7 @@
 
     <div class="card">
 
-      <h3>Gráfica temporal</h3>
+      <h3>Gráfica de tiempo</h3>
 
       <canvas id="lineChart"></canvas>
 
@@ -196,7 +198,7 @@
 
     <div class="card">
 
-      <h3>Gráfica categorías</h3>
+      <h3>Gráfica por tipo de movimiento</h3>
 
       <canvas id="barChart"></canvas>
 
@@ -207,7 +209,7 @@
   <!-- PREDICCION -->
   <div class="card">
 
-    <h3>Predicción</h3>
+    <h3>Predicción de dinero a futuro</h3>
 
     <div class="row">
 
@@ -239,22 +241,22 @@
   <!-- EXPORTAR -->
   <div class="card">
 
-    <h3>Excel / JSON</h3>
+    <h3>Excel / Hoja de JSON</h3>
 
     <div class="row">
 
       <button onclick="exportarExcel()">
-        Exportar Excel
+        Guardar como Excel
       </button>
 
       <input type="file" id="inputExcel">
 
       <button onclick="importarExcel()">
-        Importar Excel
+        Abrir archivo Excel
       </button>
 
       <button onclick="exportarJSON()">
-        Exportar JSON
+        Guardar como hoja de JSON
       </button>
 
     </div>
